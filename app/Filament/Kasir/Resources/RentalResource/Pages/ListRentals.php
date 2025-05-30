@@ -1,0 +1,19 @@
+<?php
+
+namespace App\Filament\Kasir\Resources\RentalResource\Pages;
+
+use App\Filament\Kasir\Resources\RentalResource;
+use Filament\Actions;
+use Filament\Resources\Pages\ListRecords;
+
+class ListRentals extends ListRecords
+{
+    protected static string $resource = RentalResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\CreateAction::make(),
+        ];
+    }
+}
