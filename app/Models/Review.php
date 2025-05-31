@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Review extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'rental_id',
         'user_id',
@@ -16,11 +14,12 @@ class Review extends Model
         'comment',
     ];
 
-    public function rental()
+    public function rental(): BelongsTo
     {
         return $this->belongsTo(Rental::class);
     }
-    public function user()
+
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

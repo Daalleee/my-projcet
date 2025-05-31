@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use App\Models\Motor;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Rental extends Model
 {
@@ -24,19 +26,19 @@ class Rental extends Model
         'status' => 'pending',
     ];
 
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function motor()
+    public function motor(): BelongsTo
     {
         return $this->belongsTo(Motor::class);
     }
 
-    public function review()
+    public function reviews(): HasMany
     {
-        return $this->hasOne(Review::class);
+        return $this->hasMany(Review::class);
     }
 
     protected static function booted()
