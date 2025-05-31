@@ -89,7 +89,17 @@ class RentalResource extends Resource
                     ])
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                // Tables\Actions\EditAction::make(),
+                Tables\Actions\Action::make('dibatalkan')
+                    ->label('Dibatalkan')
+                    ->action(function ($record) {
+                        $record->status = 'cancelled';
+                        $record->save();
+                    })
+                    ->visible(fn($record) => $record->status === 'pending')
+                    ->color('danger')
+                    ->icon('heroicon-o-x-circle'),
+
                 Tables\Actions\Action::make('konfirmasi')
                     ->label('Konfirmasi')
                     ->action(function ($record) {
@@ -98,6 +108,16 @@ class RentalResource extends Resource
                     })
                     ->visible(fn($record) => $record->status === 'pending')
                     ->color('success')
+                    ->icon('heroicon-o-check-circle'),
+
+                Tables\Actions\Action::make('selesai')
+                    ->label('Selesai')
+                    ->action(function ($record) {
+                        $record->status = 'completed';
+                        $record->save();
+                    })
+                    ->visible(fn($record) => $record->status === 'confirmed') // hanya muncul jika sudah dikonfirmasi
+                    ->color('warning')
                     ->icon('heroicon-o-check-circle'),
             ])
             ->bulkActions([]);
