@@ -9,4 +9,8 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateMotor extends CreateRecord
 {
     protected static string $resource = MotorResource::class;
+    protected function getRedirectUrl(): string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

@@ -52,8 +52,6 @@ class RentalResource extends Resource
                 DatePicker::make('start_date')->label('Tanggal Mulai')->required(),
                 DatePicker::make('end_date')->label('Tanggal Selesai')->required(),
 
-                TextInput::make('total_price')->label('Total Harga')->numeric()->required(),
-
                 Select::make('status')
                     ->label('Status')
                     ->options([
@@ -134,8 +132,8 @@ class RentalResource extends Resource
             'edit' => Pages\EditRental::route('/{record}/edit'),
         ];
     }
-    // public static function canCreate(): bool
-    // {
-    //     return false;
-    // }
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 }
