@@ -50,9 +50,13 @@
                     <p class="text-green-600 text-sm mb-2">Dapat jas hujan</p>
                     <p class="font-bold text-blue-600">Harga: Rp
                         {{ number_format($motor->rental_price_per_day, 0, ',', '.') }}/hari</p>
-                    <a href="https://wa.me/6281337063361?text=Saya%20ingin%20menyewa%20motor%20{{ urlencode($motor->brand . ' ' . $motor->model) }}%20(Nomor%20Plat:%20{{ urlencode($motor->plate_number) }})%20dengan%20harga%20Rp%20{{ number_format($motor->rental_price_per_day, 0, ',', '.') }}%20per%20hari.%20Mohon%20info%20ketersediaan!"
-                        class="bg-blue-500 text-white px-4 py-2 rounded mt-4 inline-block" target="_blank">Sewa
-                        Sekarang</a>
+                    @auth
+                        <button onclick="redirectToWhatsApp({{ $motor->id }})"
+                            class="bg-blue-500 text-white px-4 py-2 rounded mt-4 inline-block">Sewa Sekarang</button>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="bg-blue-500 text-white px-4 py-2 rounded mt-4 inline-block">Login untuk Sewa</a>
+                    @endauth
                 </div>
             @empty
                 <p class="text-center text-gray-500">Tidak ada motor tersedia saat ini.</p>
@@ -60,6 +64,33 @@
         </div>
         {{ $motors->links() }}
     </main>
+
+    <script>
+        function redirectToWhatsApp(motorId) {
+            // Buat form dinamis untuk mengirimkan data dengan metode POST
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route('rent', ['motorId' => ':motorId']) }}'.replace(':motorId', motorId);
+
+            // Tambahkan token CSRF
+            const csrfToken = document.createElement('input');
+            csrfToken.type = 'hidden';
+            csrfToken.name = '_token';
+            csrfToken.value = '{{ csrf_token() }}';
+            form.appendChild(csrfToken);
+
+            // Tambahkan input motorId
+            const motorInput = document.createElement('input');
+            motorInput.type = 'hidden';
+            motorInput.name = 'motor_id';
+            motorInput.value = motorId;
+            form.appendChild(motorInput);
+
+            // Tambahkan form ke dokumen dan submit
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
 </body>
 
 </html>
